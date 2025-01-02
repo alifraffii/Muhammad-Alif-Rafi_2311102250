@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from prettytable import PrettyTable
 import math
 
-
 # Rekursif: Hitung nilai e^x menggunakan deret Taylor
 def exp_recursive(x, n):
     if n == 0:
@@ -54,18 +53,25 @@ while True:
             print("Masukkan nilai x yang positif atau nol!")
             continue
 
-        n_terms = 10  # Jumlah suku deret Taylor
+        n_terms = 100  # Jumlah suku deret Taylor
+        iterations = 10  # Jumlah pengulangan untuk rata-rata
         x_values.append(x)
 
         # Ukur waktu eksekusi algoritma rekursif
-        start_time = time.time()
-        exp_recursive(x, n_terms)
-        recursive_times.append(time.time() - start_time)
+        recursive_time_total = 0
+        for _ in range(iterations):
+            start_time = time.perf_counter()
+            exp_recursive(x, n_terms)
+            recursive_time_total += (time.perf_counter() - start_time)
+        recursive_times.append(recursive_time_total / iterations)
 
         # Ukur waktu eksekusi algoritma iteratif
-        start_time = time.time()
-        exp_iterative(x, n_terms)
-        iterative_times.append(time.time() - start_time)
+        iterative_time_total = 0
+        for _ in range(iterations):
+            start_time = time.perf_counter()
+            exp_iterative(x, n_terms)
+            iterative_time_total += (time.perf_counter() - start_time)
+        iterative_times.append(iterative_time_total / iterations)
 
         # Cetak tabel waktu eksekusi
         print_execution_table()
